@@ -10,6 +10,7 @@ import {
   doc,
 } from "firebase/firestore";
 import useGetdata from "@/hooks/useGetdata";
+import dayjs from "dayjs";
 
 export default function Home() {
   const { getData, data } = useGetdata();
@@ -18,32 +19,39 @@ export default function Home() {
   const [expenseName, setExpenseName] = useState("");
   const [amount, setAmount] = useState("");
   const expenseCollectionRef = collection(db, "expense");
-
+  const [date, setDate] = useState(new Date().toISOString());
   // get expense
   useEffect(() => {
     getData(expenseCollectionRef);
-  }, [expenseCollectionRef]);
+  }, []);
 
   // add expense
   const createExpense = async () => {
     await addDoc(expenseCollectionRef, {
+      date: date,
       expenseName: expenseName,
       amount: parseInt(amount),
     });
     getData(expenseCollectionRef);
     setExpenseName("");
     setAmount("");
+    setDate(null);
   };
 
   // update expense
   const updateExpense = async () => {
     setIsUpdate(false);
     const expenseDoc = doc(db, "expense", itemID);
-    const newFields = { expenseName: expenseName, amount: parseInt(amount) };
+    const newFields = {
+      date: date,
+      expenseName: expenseName,
+      amount: parseInt(amount),
+    };
     await updateDoc(expenseDoc, newFields);
     getData(expenseCollectionRef);
     setExpenseName("");
     setAmount("");
+    setDate(null);
   };
 
   // delete expense
@@ -61,9 +69,17 @@ export default function Home() {
     <div className="flex flex-col md:flex-row gap-5 items-start md:justify-center ">
       <div className="flex flex-row gap-2 ">
         <div className="flex flex-col gap-2">
+          {isUpate && (
+            <input
+              type="datetime-local"
+              className="border rounded-md py-2 px-4"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          )}
           <input
             type="text"
-            placeholder="Enter tasks"
+            placeholder="Enter Expense"
             className="border rounded-md py-2 px-4"
             value={expenseName}
             onChange={(e) => setExpenseName(e.target.value)}
@@ -90,8 +106,9 @@ export default function Home() {
           <table>
             <thead>
               <tr className="bg-gray-400 ">
-                <th className="border p-1">Expense Name:</th>
-                <th className="border p-1">Expense Amount:</th>
+                <th className="border p-1">Date</th>
+                <th className="border p-1">Expense Name</th>
+                <th className="border p-1">Expense Amount</th>
                 <th className="border p-1">Action</th>
               </tr>
             </thead>
@@ -106,6 +123,9 @@ export default function Home() {
                 <>
                   {data?.map((item, index) => (
                     <tr key={index}>
+                      <td className="border p-1">
+                        {dayjs(item?.date).format("DD/MM/YYYY hh:mm A")}
+                      </td>
                       <td className="border p-1">{item?.expenseName}</td>
                       <td className="border p-1">{item?.amount}</td>
                       <td className="border p-1">
