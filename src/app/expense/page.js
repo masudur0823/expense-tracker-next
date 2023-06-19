@@ -18,8 +18,12 @@ export default function Home() {
   const [itemID, setItemID] = useState("");
   const [expenseName, setExpenseName] = useState("");
   const [amount, setAmount] = useState("");
-  const expenseCollectionRef = collection(db, "expense");
   const [date, setDate] = useState(new Date().toISOString());
+  const [category, setCategory] = useState("Food");
+  const expenseCollectionRef = collection(db, "expense");
+  // category
+  const categoryList = ["Food", "Utility Bill", "Medicine","Rent", "Loan", "Others"];
+
   // get expense
   useEffect(() => {
     getData(expenseCollectionRef);
@@ -31,27 +35,31 @@ export default function Home() {
       date: date,
       expenseName: expenseName,
       amount: parseInt(amount),
+      category:category,
     });
     getData(expenseCollectionRef);
+    setDate(null);
+    setCategory("");
     setExpenseName("");
     setAmount("");
-    setDate(null);
   };
 
   // update expense
   const updateExpense = async () => {
-    setIsUpdate(false);
     const expenseDoc = doc(db, "expense", itemID);
     const newFields = {
       date: date,
       expenseName: expenseName,
       amount: parseInt(amount),
+      category:category,
     };
     await updateDoc(expenseDoc, newFields);
     getData(expenseCollectionRef);
+    setDate(null);
+    setCategory("");
     setExpenseName("");
     setAmount("");
-    setDate(null);
+    setIsUpdate(false);
   };
 
   // delete expense
@@ -66,7 +74,7 @@ export default function Home() {
     .reduce((a, c) => a + c, 0);
 
   return (
-    <div className="flex flex-col md:flex-row gap-5 items-start md:justify-center ">
+    <div className="flex flex-col md:flex-row gap-5 items-start md:justify-center py-5">
       <div className="flex flex-row gap-2 ">
         <div className="flex flex-col gap-2">
           {isUpate && (
@@ -77,6 +85,20 @@ export default function Home() {
               onChange={(e) => setDate(e.target.value)}
             />
           )}
+
+          <select
+            className="border rounded-md py-2 px-4"
+            name=""
+            id=""
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            {categoryList.map((item, index) => (
+              <option key={index} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
           <input
             type="text"
             placeholder="Enter Expense"
@@ -107,6 +129,7 @@ export default function Home() {
             <thead>
               <tr className="bg-gray-400 ">
                 <th className="border p-1">Date</th>
+                <th className="border p-1">Category</th>
                 <th className="border p-1">Expense Name</th>
                 <th className="border p-1">Expense Amount</th>
                 <th className="border p-1">Action</th>
@@ -115,7 +138,7 @@ export default function Home() {
             <tbody>
               {data?.length === 0 ? (
                 <tr>
-                  <td colSpan={3} className="border p-1">
+                  <td colSpan={4} className="border p-1 text-center">
                     No data found
                   </td>
                 </tr>
@@ -126,14 +149,17 @@ export default function Home() {
                       <td className="border p-1">
                         {dayjs(item?.date).format("DD/MM/YYYY hh:mm A")}
                       </td>
+                      <td className="border p-1">{item?.category}</td>
                       <td className="border p-1">{item?.expenseName}</td>
                       <td className="border p-1">{item?.amount}</td>
                       <td className="border p-1">
                         <button
                           onClick={() => {
-                            setExpenseName(item.expenseName);
-                            setAmount(item.amount);
-                            setItemID(item.id);
+                            setExpenseName(item?.expenseName);
+                            setAmount(item?.amount);
+                            setDate(item?.date);
+                            setCategory(item?.category);
+                            setItemID(item?.id);
                             setIsUpdate(true);
                           }}
                         >
@@ -148,7 +174,9 @@ export default function Home() {
                 </>
               )}
               <tr>
-                <th className="border">Total</th>
+                <th className="border" colSpan={2}>
+                  Total
+                </th>
                 <th className="border">{totalAmount}</th>
                 <th className="border"></th>
               </tr>
