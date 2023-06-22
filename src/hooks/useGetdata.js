@@ -4,7 +4,7 @@ import { getDocs, orderBy, query, where, limit } from "firebase/firestore";
 const useGetdata = () => {
   const [data, setData] = useState([]);
   const getData = async (expenseCollectionRef) => {
-    const q = query(expenseCollectionRef, orderBy("date", "desc"), limit(3));
+    const q = query(expenseCollectionRef, orderBy("date", "desc"));
     // const q = query(expenseCollectionRef, where("category", "==", filterCategory));
     const res = await getDocs(q);
     const finalRes = res.docs.map((doc) => ({ ...doc.data(), id: doc.id }));

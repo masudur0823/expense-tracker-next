@@ -1,7 +1,10 @@
-export default function Expense() {
+
+
+export default function ExpenseLayout({children}) {
+
   return (
-    <>
-      <h1>hi</h1>
-    </>
+    <div className="flex flex-col md:flex-row gap-5 items-start md:justify-center py-5">
+      {children}
+    </div>
   );
 }

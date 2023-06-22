@@ -1,37 +1,8 @@
 import React from "react";
+import useGetObject from "@/hooks/useGetObject";
 
 function Filter({ filter, setFilter }) {
-  // category
-  const categoryList = [
-    {
-      title: "All",
-      value: "",
-    },
-    {
-      title: "Food",
-      value: "Food",
-    },
-    {
-      title: "Utility Bill",
-      value: "Utility Bill",
-    },
-    {
-      title: "Medicine",
-      value: "Medicine",
-    },
-    {
-      title: "Rent",
-      value: "Rent",
-    },
-    {
-      title: "Loan",
-      value: "Loan",
-    },
-    {
-      title: "Others",
-      value: "Others",
-    },
-  ];
+  const { categoryList } = useGetObject();
 
   return (
     <div>
@@ -45,9 +16,10 @@ function Filter({ filter, setFilter }) {
         value={filter}
         onChange={(e) => setFilter(e.target.value)}
       >
+        <option value={""}>All</option>
         {categoryList.map((item, index) => (
-          <option key={index} value={item.value}>
-            {item.title}
+          <option key={index} value={item}>
+            {item}
           </option>
         ))}
       </select>
