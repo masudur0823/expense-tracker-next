@@ -11,7 +11,9 @@ function Filter({
   filterAmount,
   setFilterAmount,
   filterMonthYear,
-  setFilterMonthYear
+  setFilterMonthYear,
+  filterByWeek,
+  setFilterByWeek,
 }) {
   const { categoryList } = useGetObject();
 
@@ -19,6 +21,17 @@ function Filter({
     <div>
       <p className="text-xl bg-slate-500 text-white py-2 ps-4 ">
         <b>Filter By </b>
+      </p>
+      <p className="my-2">
+        <b>Week </b>
+      </p>
+      <TextField
+        type="week"
+        // value={filterMonthYear}
+        onChange={(e) => console.log(e.target.value)}
+      />
+      <p className="my-2">
+        <b>Category </b>
       </p>
       <p className="my-2">
         <b>Month Year </b>

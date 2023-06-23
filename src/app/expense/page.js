@@ -1,9 +1,8 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { db } from "@/firebase/firebase_config";
 import { collection, deleteDoc, doc } from "firebase/firestore";
 import useGetdata from "@/hooks/useGetdata";
-import dayjs from "dayjs";
 import Filter from "@/components/expensepage/Filter";
 import useGetObject from "@/hooks/useGetObject";
 import ExpenseLayout from "@/components/expensepage";
@@ -22,7 +21,8 @@ export default function Home() {
   const [totalData, setTotalData] = useState(0);
 
   // filter Sates
-  const [filterMonthYear, setFilterMonthYear] = useState(null);
+  const [filterMonthYear, setFilterMonthYear] = useState("");
+  const [filterByWeek, setFilterByWeek] = useState("");
   const [filterCategory, setFilterCategory] = useState("");
   const [filterName, setFilterName] = useState("");
   const [filterAmount, setFilterAmount] = useState("");
@@ -80,6 +80,8 @@ export default function Home() {
           setFilterAmount={setFilterAmount}
           filterMonthYear={filterMonthYear}
           setFilterMonthYear={setFilterMonthYear}
+          filterByWeek={filterByWeek}
+          setFilterByWeek={setFilterByWeek}
         />
       </div>
 
@@ -88,6 +90,7 @@ export default function Home() {
         <ViewExpense
           deleteExpense={deleteExpense}
           data={data}
+          filterByWeek={filterByWeek}
           filterMonthYear={filterMonthYear}
           filterAmount={filterAmount}
           filterName={filterName}

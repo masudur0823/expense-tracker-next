@@ -1,9 +1,12 @@
 import dayjs from "dayjs";
-import React, { useEffect, useMemo, useState } from "react";
+var isoWeek = require("dayjs/plugin/isoWeek");
+dayjs.extend(isoWeek);
+import React, { useEffect, useState } from "react";
 
 function ViewExpense({
   deleteExpense,
   data,
+  filterByWeek,
   filterMonthYear,
   filterCategory,
   filterName,
@@ -21,12 +24,17 @@ function ViewExpense({
 
   useEffect(() => {
     const newItem = data?.filter((item) => {
-      console.log(new Date(item.date).getFullYear().toString())
+      let weeks =
+        dayjs(item.date).format("YYYY-W") +
+        dayjs(item.date).isoWeek().toString();
+        console.log(filterByWeek)
+        console.log(weeks)
       if (
         filterCategory === "" &&
         filterName === "" &&
         filterAmount === "" &&
-        filterMonthYear === null
+        filterMonthYear === "" &&
+        filterByWeek === ""
       ) {
         return item;
       } else {
@@ -37,7 +45,8 @@ function ViewExpense({
               .toLowerCase()
               .includes(filterName.toLowerCase()) &&
             item?.amount.toString().includes(filterAmount) &&
-            item?.date.slice(0,7) === filterMonthYear
+            item?.date.slice(0, 7) === filterMonthYear &&
+            weeks === filterByWeek
           );
         }
         if (filterName) {
@@ -49,13 +58,16 @@ function ViewExpense({
           return item?.amount.toString().includes(filterAmount);
         }
         if (filterMonthYear) {
-          return  item?.date.slice(0,7) === filterMonthYear
+          return item?.date.slice(0, 7) === filterMonthYear;
+        }
+        if (filterByWeek) {
+          return weeks === filterByWeek
         }
       }
     });
     setFinalData(newItem);
     setTotalData(newItem?.length);
-  }, [data, filterCategory, filterName, filterAmount, filterMonthYear]);
+  }, [data, filterCategory, filterName, filterAmount, filterMonthYear, filterByWeek]);
 
   useEffect(() => {
     const totalAmount = finalData?.reduce((a, c) => a + c.amount, 0);
