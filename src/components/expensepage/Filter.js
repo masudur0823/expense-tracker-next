@@ -1,28 +1,61 @@
 import React from "react";
 import useGetObject from "@/hooks/useGetObject";
+import Select from "../input/Select";
+import TextField from "../input/TextField";
 
-function Filter({ filter, setFilter }) {
+function Filter({
+  filter,
+  setFilter,
+  filterName,
+  setFilterName,
+  filterAmount,
+  setFilterAmount,
+  filterMonthYear,
+  setFilterMonthYear
+}) {
   const { categoryList } = useGetObject();
 
   return (
     <div>
-      <p>
-        <b>Filter: </b>
+      <p className="text-xl bg-slate-500 text-white py-2 ps-4 ">
+        <b>Filter By </b>
       </p>
-      <select
-        className="border rounded-md py-2 px-4 w-full"
-        name=""
-        id=""
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-      >
+      <p className="my-2">
+        <b>Month Year </b>
+      </p>
+      <TextField
+        type="month"
+        value={filterMonthYear}
+        onChange={(e) => setFilterMonthYear(e.target.value)}
+      />
+      <p className="my-2">
+        <b>Category </b>
+      </p>
+      <Select filter={filter} setFilter={setFilter}>
         <option value={""}>All</option>
         {categoryList.map((item, index) => (
           <option key={index} value={item}>
             {item}
           </option>
         ))}
-      </select>
+      </Select>
+
+      <p className="my-2">
+        <b>Expense Name </b>
+      </p>
+      <TextField
+        value={filterName}
+        onChange={(e) => setFilterName(e.target.value)}
+      />
+
+      <p className="my-2">
+        <b>Expense Amount</b>
+      </p>
+      <TextField
+        type="number"
+        value={filterAmount}
+        onChange={(e) => setFilterAmount(e.target.value)}
+      />
     </div>
   );
 }

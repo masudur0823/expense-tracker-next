@@ -4,7 +4,10 @@ import React, { useEffect, useMemo, useState } from "react";
 function ViewExpense({
   deleteExpense,
   data,
+  filterMonthYear,
   filterCategory,
+  filterName,
+  filterAmount,
   setDate,
   setCategory,
   setExpenseName,
@@ -12,22 +15,47 @@ function ViewExpense({
   setItemID,
   setIsUpdate,
   setTotalAmount,
+  setTotalData,
 }) {
   const [finalData, setFinalData] = useState([]);
+
   useEffect(() => {
-    let p = [];
-    data?.map((item) => {
-      if (item?.category === filterCategory) {
-        p.push(item);
+    const newItem = data?.filter((item) => {
+      console.log(new Date(item.date).getFullYear().toString())
+      if (
+        filterCategory === "" &&
+        filterName === "" &&
+        filterAmount === "" &&
+        filterMonthYear === null
+      ) {
+        return item;
+      } else {
+        if (filterCategory) {
+          return (
+            item?.category.toLowerCase() === filterCategory.toLowerCase() &&
+            item?.expenseName
+              .toLowerCase()
+              .includes(filterName.toLowerCase()) &&
+            item?.amount.toString().includes(filterAmount) &&
+            item?.date.slice(0,7) === filterMonthYear
+          );
+        }
+        if (filterName) {
+          return item?.expenseName
+            .toLowerCase()
+            .includes(filterName.toLowerCase());
+        }
+        if (filterAmount) {
+          return item?.amount.toString().includes(filterAmount);
+        }
+        if (filterMonthYear) {
+          return  item?.date.slice(0,7) === filterMonthYear
+        }
       }
-      if (filterCategory === "") {
-        p.push(item);
-      }
-
     });
-    setFinalData(p);
-
-  }, [data, filterCategory]);
+    setFinalData(newItem);
+    setTotalData(newItem?.length);
+  }, [data, filterCategory, filterName, filterAmount, filterMonthYear]);
 
   useEffect(() => {
     const totalAmount = finalData?.reduce((a, c) => a + c.amount, 0);
@@ -35,9 +63,8 @@ function ViewExpense({
   }, [finalData]);
 
   return (
-    <div className="my-4">
-     
-      <table>
+    <div className="my-4 w-full overflow-x-auto">
+      <table className="w-full">
         <thead>
           <tr className="bg-gray-400 ">
             <th className="border p-1">Date</th>

@@ -1,9 +1,15 @@
-import React from 'react'
+import React from "react";
 
-function TextField() {
+function TextField({ value, onChange, type }) {
   return (
-    <div>TextField</div>
-  )
+    <input
+      type={type ? type : 'text'}
+      min={type === 'number' && 0}
+      className="border rounded-md py-2 px-4 w-full"
+      value={value}
+      onChange={onChange}
+    />
+  );
 }
 
-export default TextField
+export default TextField;

@@ -18,8 +18,15 @@ export default function Home() {
   // states
   const [isUpdate, setIsUpdate] = useState(false);
   const [itemID, setItemID] = useState("");
-  const [filterCategory, setFilterCategory] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
+  const [totalData, setTotalData] = useState(0);
+
+  // filter Sates
+  const [filterMonthYear, setFilterMonthYear] = useState(null);
+  const [filterCategory, setFilterCategory] = useState("");
+  const [filterName, setFilterName] = useState("");
+  const [filterAmount, setFilterAmount] = useState("");
+
   // form states
   const [date, setDate] = useState(new Date().toISOString());
   const [category, setCategory] = useState("Food");
@@ -41,7 +48,7 @@ export default function Home() {
   return (
     <ExpenseLayout>
       {/* left side */}
-      <div className="flex flex-col gap-5">
+      <div className="w-80 flex flex-col gap-5">
         <ModifyExpense
           getData={getData}
           expenseCollectionRef={expenseCollectionRef}
@@ -61,14 +68,29 @@ export default function Home() {
         <p>
           <b>Total Expense:</b> {totalAmount} tk
         </p>
-        <Filter filter={filterCategory} setFilter={setFilterCategory} />
+        <p>
+          <b>Total Items:</b> {totalData}
+        </p>
+        <Filter
+          filter={filterCategory}
+          setFilter={setFilterCategory}
+          filterName={filterName}
+          setFilterName={setFilterName}
+          filterAmount={filterAmount}
+          setFilterAmount={setFilterAmount}
+          filterMonthYear={filterMonthYear}
+          setFilterMonthYear={setFilterMonthYear}
+        />
       </div>
 
       {/* right side */}
-      <div className="flex gap-5">
+      <div className="w-full flex gap-5">
         <ViewExpense
           deleteExpense={deleteExpense}
           data={data}
+          filterMonthYear={filterMonthYear}
+          filterAmount={filterAmount}
+          filterName={filterName}
           filterCategory={filterCategory}
           setDate={setDate}
           setCategory={setCategory}
@@ -77,6 +99,7 @@ export default function Home() {
           setItemID={setItemID}
           setIsUpdate={setIsUpdate}
           setTotalAmount={setTotalAmount}
+          setTotalData={setTotalData}
         />
       </div>
     </ExpenseLayout>
