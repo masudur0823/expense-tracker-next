@@ -23,6 +23,7 @@ export default function Home() {
   // filter Sates
   const [filterMonthYear, setFilterMonthYear] = useState("");
   const [filterByWeek, setFilterByWeek] = useState("");
+  const [filterByDay, setFilterByDay] = useState("");
   const [filterCategory, setFilterCategory] = useState("");
   const [filterName, setFilterName] = useState("");
   const [filterAmount, setFilterAmount] = useState("");
@@ -82,6 +83,8 @@ export default function Home() {
           setFilterMonthYear={setFilterMonthYear}
           filterByWeek={filterByWeek}
           setFilterByWeek={setFilterByWeek}
+          filterByDay={filterByDay}
+          setFilterByDay={setFilterByDay}
         />
       </div>
 
@@ -103,6 +106,7 @@ export default function Home() {
           setIsUpdate={setIsUpdate}
           setTotalAmount={setTotalAmount}
           setTotalData={setTotalData}
+          filterByDay={filterByDay}
         />
       </div>
     </ExpenseLayout>

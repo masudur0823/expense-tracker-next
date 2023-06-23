@@ -14,6 +14,8 @@ function Filter({
   setFilterMonthYear,
   filterByWeek,
   setFilterByWeek,
+  filterByDay,
+  setFilterByDay
 }) {
   const { categoryList } = useGetObject();
 
@@ -23,16 +25,21 @@ function Filter({
         <b>Filter By </b>
       </p>
       <p className="my-2">
+        <b>Day </b>
+      </p>
+      <TextField
+        type="date"
+        value={filterByDay}
+        onChange={(e) => setFilterByDay(e.target.value)}
+      />
+      <p className="my-2">
         <b>Week </b>
       </p>
       <TextField
         type="week"
-        // value={filterMonthYear}
-        onChange={(e) => console.log(e.target.value)}
+        value={filterByWeek}
+        onChange={(e) => setFilterByWeek(e.target.value)}
       />
-      <p className="my-2">
-        <b>Category </b>
-      </p>
       <p className="my-2">
         <b>Month Year </b>
       </p>
@@ -41,6 +48,7 @@ function Filter({
         value={filterMonthYear}
         onChange={(e) => setFilterMonthYear(e.target.value)}
       />
+
       <p className="my-2">
         <b>Category </b>
       </p>

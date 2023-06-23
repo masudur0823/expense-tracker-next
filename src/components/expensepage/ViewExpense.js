@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 function ViewExpense({
   deleteExpense,
   data,
+  filterByDay,
   filterByWeek,
   filterMonthYear,
   filterCategory,
@@ -21,53 +22,64 @@ function ViewExpense({
   setTotalData,
 }) {
   const [finalData, setFinalData] = useState([]);
+console.log(filterByDay)
+  const applyFilters = () => {
+    let updateList = data;
+
+    if (filterCategory) {
+      updateList = updateList?.filter(
+        (item) => item?.category.toLowerCase() === filterCategory.toLowerCase()
+      );
+    }
+
+    if (filterName) {
+      updateList = updateList?.filter((item) =>
+        item?.expenseName.toLowerCase().includes(filterName.toLowerCase())
+      );
+    }
+
+    if (filterAmount) {
+      updateList = updateList?.filter((item) =>
+        item?.amount.toString().includes(filterAmount)
+      );
+    }
+
+    if (filterMonthYear) {
+      updateList = updateList?.filter(
+        (item) => item?.date.slice(0, 7) === filterMonthYear
+      );
+    }
+
+    if (filterByWeek) {
+      updateList = updateList?.filter(
+        (item) =>
+          dayjs(item.date).format("YYYY-W") +
+            dayjs(item.date).isoWeek().toString() ===
+          filterByWeek
+      );
+    }
+
+    if (filterByDay) {
+      updateList = updateList?.filter(
+        (item) => dayjs(item.date).format("YYYY-MM-DD") === filterByDay
+      );
+    }
+
+    setFinalData(updateList);
+    setTotalData(updateList?.length);
+  };
 
   useEffect(() => {
-    const newItem = data?.filter((item) => {
-      let weeks =
-        dayjs(item.date).format("YYYY-W") +
-        dayjs(item.date).isoWeek().toString();
-        console.log(filterByWeek)
-        console.log(weeks)
-      if (
-        filterCategory === "" &&
-        filterName === "" &&
-        filterAmount === "" &&
-        filterMonthYear === "" &&
-        filterByWeek === ""
-      ) {
-        return item;
-      } else {
-        if (filterCategory) {
-          return (
-            item?.category.toLowerCase() === filterCategory.toLowerCase() &&
-            item?.expenseName
-              .toLowerCase()
-              .includes(filterName.toLowerCase()) &&
-            item?.amount.toString().includes(filterAmount) &&
-            item?.date.slice(0, 7) === filterMonthYear &&
-            weeks === filterByWeek
-          );
-        }
-        if (filterName) {
-          return item?.expenseName
-            .toLowerCase()
-            .includes(filterName.toLowerCase());
-        }
-        if (filterAmount) {
-          return item?.amount.toString().includes(filterAmount);
-        }
-        if (filterMonthYear) {
-          return item?.date.slice(0, 7) === filterMonthYear;
-        }
-        if (filterByWeek) {
-          return weeks === filterByWeek
-        }
-      }
-    });
-    setFinalData(newItem);
-    setTotalData(newItem?.length);
-  }, [data, filterCategory, filterName, filterAmount, filterMonthYear, filterByWeek]);
+    applyFilters();
+  }, [
+    filterCategory,
+    filterName,
+    filterAmount,
+    filterMonthYear,
+    filterByWeek,
+    filterByDay,
+    data,
+  ]);
 
   useEffect(() => {
     const totalAmount = finalData?.reduce((a, c) => a + c.amount, 0);
