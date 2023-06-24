@@ -49,7 +49,7 @@ export default function Home() {
   return (
     <ExpenseLayout>
       {/* left side */}
-      <div className="w-80 flex flex-col gap-5">
+      <div className="w-full md:w-80 flex flex-col gap-5">
         <ModifyExpense
           getData={getData}
           expenseCollectionRef={expenseCollectionRef}

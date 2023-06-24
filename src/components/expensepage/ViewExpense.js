@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 var isoWeek = require("dayjs/plugin/isoWeek");
 dayjs.extend(isoWeek);
 import React, { useEffect, useState } from "react";
+import Table from "../table/Table";
 
 function ViewExpense({
   deleteExpense,
@@ -22,7 +23,6 @@ function ViewExpense({
   setTotalData,
 }) {
   const [finalData, setFinalData] = useState([]);
-console.log(filterByDay)
   const applyFilters = () => {
     let updateList = data;
 
@@ -86,58 +86,47 @@ console.log(filterByDay)
     setTotalAmount(totalAmount);
   }, [finalData]);
 
+  const columns = [
+    {
+      label: "Date",
+      key: "date",
+      render: (value) => dayjs(value).format("DD/MM/YYYY hh:mm A"),
+    },
+    {
+      label: "Expense Name",
+      key: "expenseName",
+    },
+    {
+      label: "Amount",
+      key: "amount",
+    },
+    {
+      label: "Action",
+      key: "id",
+      render: (value, row) => (
+        <>
+          <button
+            onClick={() => {
+              setExpenseName(row?.expenseName);
+              setAmount(row?.amount);
+              setDate(dayjs(row?.date).format("YYYY-MM-DDThh:mm"));
+              setCategory(row?.category);
+              setItemID(row?.id);
+              setIsUpdate(true);
+            }}
+          >
+            🔄
+          </button>
+          <button onClick={() => deleteExpense(value)}>❌</button>
+        </>
+      ),
+    },
+  ];
+
   return (
-    <div className="my-4 w-full overflow-x-auto">
-      <table className="w-full">
-        <thead>
-          <tr className="bg-gray-400 ">
-            <th className="border p-1">Date</th>
-            <th className="border p-1">Category</th>
-            <th className="border p-1">Expense Name</th>
-            <th className="border p-1">Expense Amount</th>
-            <th className="border p-1">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data?.length === 0 ? (
-            <tr>
-              <td colSpan={5} className="border p-1 text-center">
-                No data found
-              </td>
-            </tr>
-          ) : (
-            <>
-              {finalData?.map((item, index) => (
-                <tr key={index}>
-                  <td className="border p-1">
-                    {dayjs(item?.date).format("DD/MM/YYYY hh:mm A")}
-                  </td>
-                  <td className="border p-1">{item?.category}</td>
-                  <td className="border p-1">{item?.expenseName}</td>
-                  <td className="border p-1">{item?.amount}</td>
-                  <td className="border p-1">
-                    <button
-                      onClick={() => {
-                        setExpenseName(item?.expenseName);
-                        setAmount(item?.amount);
-                        setDate(dayjs(item?.date).format("YYYY-MM-DDThh:mm"));
-                        setCategory(item?.category);
-                        setItemID(item?.id);
-                        setIsUpdate(true);
-                      }}
-                    >
-                      🔄
-                    </button>
-                    <button onClick={() => deleteExpense(item?.id)}>❌</button>
-                  </td>
-                </tr>
-              ))}
-            </>
-          )}
-        </tbody>
-      </table>
-      {/* pagination */}
-    </div>
+    <>
+      <Table columns={columns} data={data} />
+    </>
   );
 }
 
