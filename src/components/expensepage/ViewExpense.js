@@ -125,7 +125,7 @@ function ViewExpense({
 
   return (
     <>
-      <Table columns={columns} data={data} />
+      <Table columns={columns} data={finalData} />
     </>
   );
 }
