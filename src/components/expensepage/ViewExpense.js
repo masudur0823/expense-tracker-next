@@ -90,7 +90,11 @@ function ViewExpense({
     {
       label: "Date",
       key: "date",
-      render: (value) => dayjs(value).format("DD/MM/YYYY hh:mm A"),
+      render: (value) => dayjs(value).format("DD/MM/YYYY"),
+    },
+    {
+      label: "Category",
+      key: "category",
     },
     {
       label: "Expense Name",
