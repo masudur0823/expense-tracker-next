@@ -23,6 +23,7 @@ function ViewExpense({
   setTotalData,
 }) {
   const [finalData, setFinalData] = useState([]);
+  
   const applyFilters = () => {
     let updateList = data;
 

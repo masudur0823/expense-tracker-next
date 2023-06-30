@@ -89,7 +89,7 @@ export default function Home() {
       </div>
 
       {/* right side */}
-      <div className="w-full flex gap-5">
+      <div className="w-full gap-5">
         <ViewExpense
           deleteExpense={deleteExpense}
           data={data}

@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Pagination from "../pagiantion/Pagination";
 
 function Table({ columns, data }) {
+  const [page, setPage] = useState(data);
+  useEffect(() => {
+    setPage(data.slice(0,10))
+  }, [data])
+  
+  console.log(page)
   return (
+    <>
     <div className="my-4 w-full overflow-x-auto">
       <table className="w-full">
         <thead>
@@ -22,7 +30,7 @@ function Table({ columns, data }) {
             </tr>
           ) : (
             <>
-              {data.map((row) => (
+              {page.map((row) => (
                 <tr key={row?.id}>
                   {columns.map((column) => (
                     <td className="border p-1">
@@ -38,6 +46,8 @@ function Table({ columns, data }) {
         </tbody>
       </table>
     </div>
+    <Pagination setPage={setPage} data={data}/>
+    </>
   );
 }
 
