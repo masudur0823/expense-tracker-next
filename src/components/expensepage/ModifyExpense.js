@@ -94,7 +94,7 @@ function ModifyExpense({
       
       <button
         onClick={isUpdate ? updateExpense : createExpense}
-        className="h-10 w-10 bg-orange-400 rounded-lg shadow-md font-semibold w-full"
+        className="h-10 w-10 bg-orange-400 rounded-lg shadow-md font-semibold w-full text-white"
       >
         {isUpdate ? "Update" : "Add"}
       </button>

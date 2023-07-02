@@ -6,13 +6,13 @@ export default function Home() {
       <div className="flex flex-col md:flex-row gap-5 justify-center my-5">
         <Card
           title="Income"
-          bg="green"
+          bg="bg-green-600"
           amount={200}
           icon={<FaMoneyBillAlt />}
         />
         <Card
           title="Expense"
-          bg="red"
+          bg="bg-red-600"
           amount={400}
           icon={<FaMoneyBillAlt />}
         />
@@ -24,7 +24,7 @@ export default function Home() {
 function Card({ title, amount, bg, icon }) {
   return (
     <div
-      className={`p-4 bg-${bg}-600 text-white rounded-lg w-52 flex items-center justify-between`}
+      className={`p-4 ${bg} text-white rounded-lg w-52 flex items-center justify-between`}
     >
       <div>
         <h5 className="text-xl">{title}</h5>
