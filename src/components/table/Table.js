@@ -50,20 +50,36 @@ function Table({ columns, data }) {
         </table>
       </div>
 
-      <ReactPaginate
-        pageCount={pageCount}
-        pageRangeDisplayed={5} // Number of page links to display
-        marginPagesDisplayed={2} // Number of page links to display at the beginning and end
-        onPageChange={handlePageChange} // Callback function for page change
-        containerClassName="pagination flex gap-3 items-center font-semibold"
-        activeClassName="active"
-        previousLabel="< Prev"
-        nextLabel="Next >"
-        pageLinkClassName="py-2 px-4 text-white bg-slate-600 rounded-lg"
-        previousClassName="border border-orange-400 bg-orange-400 py-2 px-4 rounded-lg text-white"
-        nextClassName="border border-orange-400 bg-orange-400 py-2 px-4 rounded-lg text-white"
-        disabledClassName="opacity-50 bg-white text-black"
-      />
+      <div className="flex justify-between items-center mt-5 md:mt-10 flex-wrap gap-3">
+        {data?.length === 0 ? (
+          "Showing 0 from 0"
+        ) : (
+          <p>
+            Showing{" "}
+            {currentPage === pageCount - 1
+              ? currentPage * itemsPerPage + page.length
+              : offset + itemsPerPage}{" "}
+            from {data?.length}
+          </p>
+        )}
+
+        <ReactPaginate
+          pageCount={pageCount}
+          pageRangeDisplayed={5} // Number of page links to display
+          marginPagesDisplayed={2} // Number of page links to display at the beginning and end
+          onPageChange={handlePageChange} // Callback function for page change
+          containerClassName="pagination flex gap-3 items-center font-semibold"
+          activeClassName="active"
+          previousLabel="< Prev"
+          nextLabel="Next >"
+          pageLinkClassName="py-2 px-4 text-white bg-slate-600 rounded-lg"
+          activeLinkClassName="!bg-orange-400"
+          previousClassName="border border-orange-400 bg-orange-400 py-2 px-4 rounded-lg text-white"
+          nextClassName="border border-orange-400 bg-orange-400 py-2 px-4 rounded-lg text-white"
+          disabledClassName="opacity-50 bg-white !text-black !border-slate-400"
+          renderOnZeroPageCount={null}
+        />
+      </div>
     </>
   );
 }
