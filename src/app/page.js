@@ -6,28 +6,43 @@ import { useEffect } from "react";
 import { FaMoneyBillAlt } from "react-icons/fa";
 
 export default function Home() {
-  const { getData, data } = useGetdata();
+  const { getData,getIncomeData, data, incomeData } = useGetdata();
   const expenseCollectionRef = collection(db, "expense");
+  const incomeCollectionRef = collection(db, "income");
   // get expense
   useEffect(() => {
     getData(expenseCollectionRef);
   }, []);
 
-  const totalAmount = data?.reduce((a, c) => a + c.amount, 0);
+  // get income
+  useEffect(() => {
+    getIncomeData(incomeCollectionRef);
+  }, []);
+
+  const totalExpenseAmount = data?.reduce((a, c) => a + c.amount, 0);
+  const totalIncomeAmount = incomeData?.reduce((a, c) => a + c.amount, 0);
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto p-3">
       <div className="flex flex-col md:flex-row gap-5 justify-center my-5">
         <Card
           title="Remaining Balance"
+          bg="bg-gray-600"
+          amount={totalIncomeAmount - totalExpenseAmount}
+          icon={<FaMoneyBillAlt />}
+        />
+      </div>
+      <div className="flex flex-col md:flex-row gap-5 justify-center my-5">
+        <Card
+          title="Total income"
           bg="bg-green-600"
-          amount={200}
+          amount={totalIncomeAmount}
           icon={<FaMoneyBillAlt />}
         />
         <Card
           title="Total Expense"
           bg="bg-red-600"
-          amount={totalAmount}
+          amount={totalExpenseAmount}
           icon={<FaMoneyBillAlt />}
         />
       </div>

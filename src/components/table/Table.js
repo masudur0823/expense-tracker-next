@@ -50,7 +50,7 @@ function Table({ columns, data }) {
         </table>
       </div>
 
-      <div className="flex justify-between items-center mt-5 md:mt-10 flex-wrap gap-3">
+      <div className="flex justify-center md:justify-between items-center mt-5 md:mt-10 flex-wrap gap-3">
         {data?.length === 0 ? (
           "Showing 0 from 0"
         ) : (
@@ -68,14 +68,24 @@ function Table({ columns, data }) {
           pageRangeDisplayed={5} // Number of page links to display
           marginPagesDisplayed={2} // Number of page links to display at the beginning and end
           onPageChange={handlePageChange} // Callback function for page change
-          containerClassName="pagination flex gap-3 items-center font-semibold"
+          containerClassName="pagination flex gap-2 md:gap-3 md:items-center font-semibold flex-wrap"
           activeClassName="active"
-          previousLabel="< Prev"
-          nextLabel="Next >"
-          pageLinkClassName="py-2 px-4 text-white bg-slate-600 rounded-lg"
+          previousLabel={
+            <>
+              {"< "}
+              <span className="hidden md:inline">Prev</span>
+            </>
+          }
+          nextLabel={
+            <>
+              <span className="hidden md:inline">Next</span>
+              {" >"}
+            </>
+          }
+          pageLinkClassName="py-1 md:py-2 px-2 md:px-4 text-white text-xs md:text-sm bg-slate-600 rounded-lg"
           activeLinkClassName="!bg-orange-400"
-          previousClassName="border border-orange-400 bg-orange-400 py-2 px-4 rounded-lg text-white"
-          nextClassName="border border-orange-400 bg-orange-400 py-2 px-4 rounded-lg text-white"
+          previousClassName="border border-orange-400 bg-orange-400 py-1 md:py-2 px-2 md:px-4 rounded-lg text-white text-xs md:text-sm"
+          nextClassName="border border-orange-400 bg-orange-400 py-1 md:py-2 px-2 md:px-4 rounded-lg text-white text-xs md:text-sm"
           disabledClassName="opacity-50 bg-white !text-black !border-slate-400"
           renderOnZeroPageCount={null}
         />

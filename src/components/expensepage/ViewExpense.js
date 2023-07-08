@@ -110,7 +110,7 @@ function ViewExpense({
       key: "id",
       render: (value, row) => (
         <>
-          <button
+          {/* <button
             onClick={() => {
               setExpenseName(row?.expenseName);
               setAmount(row?.amount);
@@ -122,7 +122,7 @@ function ViewExpense({
           >
             🔄
           </button>
-          <button onClick={() => deleteExpense(value)}>❌</button>
+          <button onClick={() => deleteExpense(value)}>❌</button> */}
         </>
       ),
     },

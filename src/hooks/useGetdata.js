@@ -3,6 +3,8 @@ import { getDocs, orderBy, query, where, limit } from "firebase/firestore";
 
 const useGetdata = () => {
   const [data, setData] = useState([]);
+  const [incomeData, setIncomeData] = useState([]);
+
   const getData = async (expenseCollectionRef) => {
     const q = query(expenseCollectionRef, orderBy("date", "desc"));
     // const q = query(expenseCollectionRef, where("category", "==", filterCategory));
@@ -17,7 +19,14 @@ const useGetdata = () => {
     // });
   };
 
-  return { getData, data };
+  const getIncomeData = async (incomeCollectionRef) => {
+    const q = query(incomeCollectionRef, orderBy("date", "desc"));
+    const res = await getDocs(q);
+    const finalRes = res.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    setIncomeData(finalRes);
+  }
+
+  return { getData, data ,getIncomeData, incomeData};
 };
 
 export default useGetdata;
